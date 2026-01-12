@@ -18,7 +18,7 @@ RED = (255, 0, 0)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake Game")
 
-# Initialize clockσε ποια γραμμη κωδικα
+# Initialize clock
 clock = pygame.time.Clock()
 
 # Initialize Snake
