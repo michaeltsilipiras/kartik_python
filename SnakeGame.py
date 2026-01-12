@@ -18,16 +18,18 @@ RED = (255, 0, 0)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake Game")
 
-# Initialize clock
+# Initialize clockσε ποια γραμμη κωδικα
 clock = pygame.time.Clock()
 
 # Initialize Snake
 snake = [(GRID_WIDTH // 2, GRID_HEIGHT // 2)]
-snake_direction = (0, 0)
+snake_direction = (1, 0)
 snake_speed = 10
 
 # Initialize Food
 food = (random.randint(0, GRID_WIDTH - 1), random.randint(0, GRID_HEIGHT - 1))
+# Initialize Score
+score=0
 
 def draw_snake(snake):
     for segment in snake:
@@ -36,18 +38,32 @@ def draw_snake(snake):
 def draw_food(food):
     pygame.draw.rect(screen, RED, (food[0] * GRID_SIZE, food[1] * GRID_SIZE, GRID_SIZE, GRID_SIZE))
 
+def draw_score(score):
+    font = pygame.font.SysFont(None, 36)
+    text = font.render(f"Score: {score}", True, (0, 0, 0))
+    screen.blit(text, (10, 10))
+
 def move_snake(snake, direction):
+    global score
     head = snake[-1]
     new_head = (head[0] + direction[0], head[1] + direction[1])
     snake.append(new_head)
+
     if new_head == food:
+        score += 1
         generate_food()
     else:
         snake.pop(0)
 
 def generate_food():
     global food
-    food = (random.randint(0, GRID_WIDTH - 1), random.randint(0, GRID_HEIGHT - 1))
+    while True:
+        new_food = (random.randint(0, GRID_WIDTH - 1),
+                    random.randint(0, GRID_HEIGHT - 1))
+        if new_food not in snake:
+            food = new_food
+            break
+
 
 while True:
     for event in pygame.event.get():
@@ -83,6 +99,8 @@ while True:
     # Draw the snake and food
     draw_snake(snake)
     draw_food(food)
+    draw_score(score)
+
 
     pygame.display.flip()
 
